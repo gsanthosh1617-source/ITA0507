@@ -1,0 +1,27 @@
+import cv2
+image = cv2.imread("image.png")
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+circles = cv2.HoughCircles(
+    gray,
+    cv2.HOUGH_GRADIENT,
+    1.2,
+    50,
+    param1=100,
+    param2=50,
+    minRadius=20,
+    maxRadius=200
+)
+if circles is not None:
+    circles = circles.astype(int)
+    for x, y, r in circles[0]:
+        cv2.circle(image, (x, y), r, (0, 255, 0), 2)
+        cv2.putText(image, "Watch",
+                    (x-40, y-r-10),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8, (0, 255, 0), 2)
+    print("Watch detected")
+else:
+    print("Watch not detected")
+cv2.imshow("Watch Recognition", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
